@@ -1,7 +1,7 @@
 // YOUR CODE HERE:
 
 var app = {
-  messageArray: [], 
+  //messageArray: [], 
   
   boardMessages: [],
   
