@@ -7,12 +7,9 @@ var app = {
   
   init: function() {
     this.fetch();
-    
-
   }, 
   
   send: function(message) {
-    //debugger;
     // ajax POST request returns object
     $.ajax({
       // This is the url you should use to communicate with the parse API server.
@@ -22,8 +19,6 @@ var app = {
       contentType: 'application/json',
       success: function (data) {
         console.log('chatterbox: Message sent');
-        //console.log('this is data', data);
-        //this.messageArray.push(data);
       },
       error: function (data) {
           // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
@@ -40,23 +35,20 @@ var app = {
       // This is the url you should use to communicate with the parse API server.
       url: this.server,
       type: 'GET',
-      data: 'data.results.createdAt',
+      //data: 'data.results.createdAt',
       success: function (data) {
         console.log(data);
         console.log('messages fetched');
         app.boardMessages = data.results;
+        for (var i = 0; i < data.results.length; i++) {
+          app.renderMessage(data.results[i]); 
+        }
       },
       error: function (data) {
           // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
         console.error('chatterbox: Failed to fetch messages', data);
       }
     });
-    
-    setTimeout(function() {
-      for (var i = 0; i < app.boardMessages.length; i++) {
-        app.renderMessage(app.boardMessages[i]);
-      }
-    }, 3000);
   },
   
   clearMessages: function() {
