@@ -35,12 +35,13 @@ var app = {
       // This is the url you should use to communicate with the parse API server.
       url: this.server,
       type: 'GET',
+      data: {"order": "-createdAt"},
       //data: 'data.results.createdAt',
       success: function (data) {
         console.log(data);
         console.log('messages fetched');
         app.boardMessages = data.results;
-        for (var i = 0; i < data.results.length; i++) {
+        for (var i = data.results.length - 1; i >= 0; i--) {
           app.renderMessage(data.results[i]); 
         }
       },
