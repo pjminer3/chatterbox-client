@@ -7,6 +7,7 @@ var app = {
   
   init: function() {
     this.fetch();
+    this.getRooms();
   }, 
   
   send: function(message) {
@@ -67,8 +68,38 @@ var app = {
     $message.prependTo($('#chats'));
   },
   
-  renderRoom: function() {
-    
+  getRooms: function() {
+    $.ajax({
+      // This is the url you should use to communicate with the parse API server.
+      url: this.server,
+      type: 'GET',
+      data: {
+        "order": "-createdAt",
+        "limit": "10"
+      }, 
+      //data: 'data.results.createdAt',
+      success: function (data) {
+        console.log(data);
+        console.log('rooms fetched');
+        for (var i = data.results.length - 1; i >= 0; i--) {
+          app.renderRoom(data.results[i]); 
+        }
+      },
+      error: function (data) {
+          // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
+        console.error('chatterbox: Failed to fetch rooms', data);
+      }
+    });
+  },
+  
+  renderRoom: function(roomObj) {
+
+    console.log('room should render');
+    var $newRoom = $('<option></option>');
+    $newRoom.text(roomObj['roomname']);
+    console.log($newRoom);
+    $newRoom.val(roomObj['roomname']);
+    $newRoom.prependTo($('#roomSelect'));
   },
   
   handleUsernameClick: function() {
